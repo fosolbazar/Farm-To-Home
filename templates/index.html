@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farm2Home Pro</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial;
+            background:#f4f6f8;
+        }
+
+        /* NAV */
+        .nav{
+            background:#2e7d32;
+            padding:15px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .nav a{
+            color:white;
+            text-decoration:none;
+            margin:0 10px;
+            font-weight:bold;
+        }
+
+        /* HERO */
+        .hero{
+            background:linear-gradient(120deg,#43a047,#66bb6a);
+            color:white;
+            padding:80px 20px;
+            text-align:center;
+        }
+
+        .hero h1{
+            font-size:40px;
+        }
+
+        .hero p{
+            font-size:18px;
+        }
+
+        .btn{
+            padding:10px 20px;
+            margin:10px;
+            border:none;
+            cursor:pointer;
+            font-weight:bold;
+            border-radius:5px;
+        }
+
+        .btn-login{
+            background:white;
+            color:#2e7d32;
+        }
+
+        .btn-signup{
+            background:#1b5e20;
+            color:white;
+        }
+
+        /* FEATURES */
+        .features{
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            padding:40px;
+        }
+
+        .card{
+            background:white;
+            margin:10px;
+            padding:20px;
+            width:250px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        footer{
+            text-align:center;
+            padding:20px;
+            background:#2e7d32;
+            color:white;
+            margin-top:40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="nav">
+    <div>
+        <a href="/">🌾 Farm2Home</a>
+    </div>
+
+    <div>
+        <a href="/marketplace">Marketplace</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Direct Farm to Customer Platform</h1>
+    <p>Farmers sell directly • Buyers get fresh products • No middleman</p>
+
+    <a href="/login">
+        <button class="btn btn-login">Login</button>
+    </a>
+
+    <a href="/signup">
+        <button class="btn btn-signup">Get Started</button>
+    </a>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+
+    <div class="card">
+        <h3>🌾 Farmers</h3>
+        <p>Upload products directly and earn more profit.</p>
+    </div>
+
+    <div class="card">
+        <h3>🛒 Buyers</h3>
+        <p>Buy fresh products at fair market price.</p>
+    </div>
+
+    <div class="card">
+        <h3>🚚 Delivery</h3>
+        <p>Fast courier system for all orders.</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Farm2Home Pro | Built for Smart Agriculture
+</footer>
+
+</body>
+</html>

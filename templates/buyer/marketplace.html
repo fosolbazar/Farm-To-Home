@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marketplace</title>
+</head>
+
+<body>
+{% extends "base.html" %}
+
+{% block title %}
+Marketplace
+{% endblock %}
+
+{% block content %}
+
+<h2>🛒 Marketplace</h2>
+
+{% if products %}
+
+    {% for p in products %}
+
+    <div class="card">
+
+        <h3>{{ p["name"] }}</h3>
+
+        {% if p["image"] %}
+        <img
+            src="{{ url_for('static', filename='uploads/' + p['image']) }}"
+            width="200"
+        >
+        {% endif %}
+
+        <p>
+            Selling Price:
+            ৳ {{ p["market_price"] }}
+        </p>
+
+        <a href="/cart/add/{{ p['id'] }}">
+            <button>Add To Cart</button>
+        </a>
+
+    </div>
+    <a href="/cart/add/{{ p['id'] }}">
+        <button>Add To Cart</button>
+    </a>
+
+    <a href="/cart">
+        <button style="background:orange;">
+            Go Cart 🛒
+        </button>
+    </a>
+    {% endfor %}
+
+{% else %}
+
+    <div class="card">
+        <p>No products available.</p>
+    </div>
+
+{% endif %}
+
+{% endblock %}
+</body>
+</html>

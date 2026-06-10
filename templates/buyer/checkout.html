@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+</head>
+<body>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>💳 Checkout</h2>
+
+{% for i in items %}
+<div class="card">
+
+    <h3>{{ i["name"] }}</h3>
+    <p>Qty: {{ i["qty"] }}</p>
+    <p>Price: ৳ {{ i["price"] }}</p>
+
+</div>
+{% endfor %}
+
+<div class="card">
+    <h2>Total: ৳ {{ total }}</h2>
+
+    <form method="POST" action="/payment">
+
+        <label>Payment Method</label>
+        <select name="payment">
+            <option value="bKash">bKash</option>
+            <option value="Nagad">Nagad</option>
+        </select>
+
+        <button type="submit">
+            Pay Now 🚀
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}
+</body>
+</html>

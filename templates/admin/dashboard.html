@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <h1>⚙️ Admin Dashboard</h1>
+
+    <p>
+        Manage products, users and orders.
+    </p>
+
+</div>
+
+<div class="card">
+
+    <h2>📦 Product Approval</h2>
+
+    <a href="/admin/products">
+        <button>
+            Review Products
+        </button>
+    </a>
+
+</div>
+
+<div class="card">
+
+    <h2>📊 Profit Analytics</h2>
+
+    <a href="/admin/profit">
+        <button>
+            View Profit
+        </button>
+    </a>
+
+</div>
+
+{% endblock %}
+</body>
+</html>

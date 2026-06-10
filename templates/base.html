@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Farm2HomePro{% endblock %}</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+        }
+
+        nav{
+            background:#2e7d32;
+            padding:15px;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin-right:15px;
+            font-weight:bold;
+        }
+
+        .container{
+            width:90%;
+            max-width:1200px;
+            margin:auto;
+            padding:20px;
+        }
+
+        .card{
+            background:white;
+            padding:15px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,.1);
+            margin-bottom:15px;
+        }
+
+        button{
+            background:#2e7d32;
+            color:white;
+            border:none;
+            padding:10px 15px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        input,select{
+            width:100%;
+            padding:10px;
+            margin:8px 0;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/marketplace">🛒 Marketplace</a>
+
+    {% if session.get('role') == 'farmer' %}
+        <a href="/farmer">🌾 Farmer</a>
+    {% endif %}
+
+    {% if session.get('role') == 'admin' %}
+        <a href="/admin">⚙️ Admin</a>
+    {% endif %}
+
+    {% if session.get('user_id') %}
+        <a href="/logout">🚪 Logout</a>
+    {% else %}
+        <a href="/login">🔐 Login</a>
+        <a href="/signup">📝 Signup</a>
+    {% endif %}
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

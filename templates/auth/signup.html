@@ -1,36 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head><title>Signup</title></head>
+{% extends "base.html" %}
 
-<body>
+{% block content %}
 
-<div class="nav">
-    <a href="/">Home</a>
-    <a href="/login">Login</a>
-</div>
-
-<div class="container">
+<div class="card">
 
 <h2>Signup</h2>
 
-<form method="POST">
+<form method="post">
 
-<input name="username" placeholder="Username">
-<input name="password" placeholder="Password">
-<input name="mobile" placeholder="Mobile">
+<input name="username" required placeholder="Username">
+
+<br><br>
+
+<input
+type="password"
+name="password"
+required
+placeholder="Password"
+>
+
+<br><br>
+
+<input
+name="mobile"
+required
+placeholder="Mobile"
+>
+
+<br><br>
 
 <select name="role">
-<option value="farmer">Farmer</option>
-<option value="buyer">Buyer</option>
+
+<option value="buyer">
+Buyer
+</option>
+
+<option value="farmer">
+Farmer
+</option>
+
 </select>
 
-<button>Signup</button>
+<br><br>
+
+<button>
+Signup
+</button>
 
 </form>
 
 </div>
 
-{% include "style.html" %}
-
-</body>
-</html>
+{% endblock %}

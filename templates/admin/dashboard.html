@@ -1,50 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-</head>
-<body>
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}
+Admin Dashboard
+{% endblock %}
 
 {% block content %}
 
+<h2>⚙ Admin Dashboard</h2>
+
 <div class="card">
+<h3>Total Users</h3>
+<h1>{{ users }}</h1>
+</div>
 
-    <h1>⚙️ Admin Dashboard</h1>
-
-    <p>
-        Manage products, users and orders.
-    </p>
-
+<div class="card">
+<h3>Total Products</h3>
+<h1>{{ products }}</h1>
 </div>
 
 <div class="card">
 
-    <h2>📦 Product Approval</h2>
+<a href="/admin/products">
+<button>
+Approve Products
+</button>
+</a>
 
-    <a href="/admin/products">
-        <button>
-            Review Products
-        </button>
-    </a>
+<br><br>
 
-</div>
-
-<div class="card">
-
-    <h2>📊 Profit Analytics</h2>
-
-    <a href="/admin/profit">
-        <button>
-            View Profit
-        </button>
-    </a>
+<a href="/admin/profit">
+<button>
+Profit Dashboard
+</button>
+</a>
 
 </div>
 
 {% endblock %}
-</body>
-</html>

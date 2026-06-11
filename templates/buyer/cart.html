@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head><title>Cart</title></head>
-
-<body>
 {% extends "base.html" %}
 
 {% block title %}
@@ -15,52 +10,51 @@ Cart
 
 {% if items %}
 
-    {% for i in items %}
+{% for i in items %}
 
-    <div class="card">
+<div class="card">
 
-        <h3>{{ i["name"] }}</h3>
+    <h3>{{ i["name"] }}</h3>
 
-        <p>Qty: {{ i["qty"] }}</p>
+    <p>Qty: {{ i["qty"] }}</p>
 
-        <!-- 🔥 FIXED PRICE -->
-        <p>
-            Price:
-            ৳ {{ i["market_price"] }}
-        </p>
+    <p>
+        Price:
+        ৳ {{ i["market_price"] }}
+    </p>
 
-        <!-- 🔥 ITEM TOTAL -->
-        <p>
-            Total:
-            ৳ {{ i["total"] }}
-        </p>
+    <p>
+        Total:
+        ৳ {{ i["total"] }}
+    </p>
 
-    </div>
+</div>
 
-    {% endfor %}
+{% endfor %}
 
-    <div class="card">
-        <h2>Grand Total: ৳ {{ total }}</h2>
-    </div>
-    <div class="card">
+<div class="card">
 
-            <h2>Grand Total: ৳ {{ total }}</h2>
+    <h2>
+        Grand Total:
+        ৳ {{ total }}
+    </h2>
 
-            <a href="/checkout">
-                <button style="background:green;color:white;padding:10px;">
-                    Proceed to Checkout 💳
-                </button>
-            </a>
+    <a href="/checkout">
+        <button>
+            Proceed To Checkout
+        </button>
+    </a>
 
-        </div>
+</div>
+
 {% else %}
 
-    <div class="card">
-        <p>Your cart is empty</p>
-    </div>
+<div class="card">
+
+    Cart Empty
+
+</div>
 
 {% endif %}
 
 {% endblock %}
-</body>
-</html>

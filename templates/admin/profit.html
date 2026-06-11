@@ -1,22 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profit Dashboard</title>
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}
+Profit Dashboard
+{% endblock %}
 
-<div class="container">
+{% block content %}
 
-<h1>📊 Profit Analytics</h1>
+<h2>💰 Profit Dashboard</h2>
 
 <div class="card">
-    <p>💰 Total Revenue: ৳{{ revenue }}</p>
-    <p>🌾 Farmer Share (80%): ৳{{ farmer }}</p>
-    <p>🏢 Platform Profit (20%): ৳{{ profit }}</p>
-</div>
+
+<h3>Total Revenue</h3>
+
+<h1>
+৳ {{ revenue|int }}
+</h1>
 
 </div>
 
-</body>
-</html>
+<div class="card">
+
+<h3>Farmer Share</h3>
+
+<h1>
+৳ {{ farmer|int }}
+</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Platform Profit</h3>
+
+<h1>
+৳ {{ profit|int }}
+</h1>
+
+</div>
+
+{% endblock %}

@@ -1,88 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Farmer Dashboard</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-<div class="card">
-    {% extends "base.html" %}
-
-{% block title %}Farmer Dashboard{% endblock %}
+{% block title %}
+Farmer Dashboard
+{% endblock %}
 
 {% block content %}
 
+<h2>🌾 Farmer Dashboard</h2>
+
+<!-- Upload Product Form -->
 <div class="card">
-    <h1>🌾 Farmer Dashboard</h1>
-    <p>Upload your products here.</p>
-</div>
-
-<div class="card">
-
-    <h2>➕ Add Product</h2>
-
+    <h3>Upload Product</h3>
     <form method="POST" enctype="multipart/form-data">
+        <input name="name" placeholder="Product Name" required>
+        <br><br>
 
-        <input
-            type="text"
-            name="name"
-            placeholder="Product Name"
-            required
-        >
+        <input type="number" name="price" placeholder="Farmer Price" required>
+        <br><br>
 
-        <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            required
-        >
+        <input type="file" name="image" required>
+        <br><br>
 
-        <input
-            type="file"
-            name="image"
-            required
-        >
-
-        <button type="submit">
-            Upload Product
-        </button>
-
+        <button>Upload Product</button>
     </form>
-
 </div>
 
+<!-- My Products Section -->
+<h2>My Products</h2>
+
+{% for p in products %}
 <div class="card">
+    <h3>{{ p.name }}</h3>
 
-    <h2>📦 My Products</h2>
-
-    {% if products %}
-
-        {% for p in products %}
-
-        <div style="border-bottom:1px solid #ddd;padding:10px 0;">
-
-            <h3>{{ p["name"] }}</h3>
-
-            <p>
-                Farmer Price:
-                ৳ {{ p["price"] }}
-            </p>
-
-        </div>
-
-        {% endfor %}
-
-    {% else %}
-
-        <p>No products uploaded yet.</p>
-
+    {% if p.image %}
+    <img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="250">
     {% endif %}
 
+    <!-- Edit Button -->
+    <a href="/farmer/edit/{{ p.id }}" class="btn btn-dark">Edit</a>
+
+    <p>Farmer Price: ৳ {{ p.price }}</p>
+
+    {% if p.approved == 1 %}
+        <p>✅ Approved</p>
+    {% else %}
+        <p>⏳ Pending Approval</p>
+    {% endif %}
 </div>
+{% endfor %}
 
 {% endblock %}
-
-</div>
-
-</body>
-</html>

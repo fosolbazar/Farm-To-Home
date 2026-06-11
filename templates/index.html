@@ -1,102 +1,149 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+
+{% block title %}Farm2Home Pro{% endblock %}
+
+{% block content %}
 <head>
-    <title>Farm2Home Pro</title>
-
-    <style>
-        body{
-            margin:0;
-            font-family:Arial;
-            background:#f4f6f8;
-        }
-
-        /* NAV */
-        .nav{
-            background:#2e7d32;
-            padding:15px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        }
-
-        .nav a{
-            color:white;
-            text-decoration:none;
-            margin:0 10px;
-            font-weight:bold;
-        }
-
-        /* HERO */
-        .hero{
-            background:linear-gradient(120deg,#43a047,#66bb6a);
-            color:white;
-            padding:80px 20px;
-            text-align:center;
-        }
-
-        .hero h1{
-            font-size:40px;
-        }
-
-        .hero p{
-            font-size:18px;
-        }
-
-        .btn{
-            padding:10px 20px;
-            margin:10px;
-            border:none;
-            cursor:pointer;
-            font-weight:bold;
-            border-radius:5px;
-        }
-
-        .btn-login{
-            background:white;
-            color:#2e7d32;
-        }
-
-        .btn-signup{
-            background:#1b5e20;
-            color:white;
-        }
-
-        /* FEATURES */
-        .features{
-            display:flex;
-            justify-content:center;
-            flex-wrap:wrap;
-            padding:40px;
-        }
-
-        .card{
-            background:white;
-            margin:10px;
-            padding:20px;
-            width:250px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
-        }
-
-        footer{
-            text-align:center;
-            padding:20px;
-            background:#2e7d32;
-            color:white;
-            margin-top:40px;
-        }
-    </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial;
+        background: #f4f6f8;
+    }
 
-<!-- NAV -->
-<div class="nav">
-    <div>
-        <a href="/">🌾 Farm2Home</a>
-    </div>
+    /* NAVBAR */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #1b5e20;
+        padding: 15px 30px;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
 
-    <div>
+    .logo {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+        color: #c8e6c9;
+    }
+
+    /* HERO */
+    .hero {
+        background: linear-gradient(135deg, #2e7d32, #66bb6a);
+        color: white;
+        text-align: center;
+        padding: 90px 20px;
+        border-radius: 0 0 40px 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .hero h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .hero-buttons {
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 22px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 5px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .btn-primary {
+        background: white;
+        color: #2e7d32;
+    }
+
+    .btn-dark {
+        background: #1b5e20;
+        color: white;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 40px;
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+    }
+
+    .card h2 {
+        color: #2e7d32;
+    }
+
+    .stats {
+        background: white;
+        margin: 20px auto;
+        padding: 30px;
+        max-width: 900px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .stats-grid {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .stat-box h2 {
+        color: #2e7d32;
+        font-size: 32px;
+    }
+</style>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">🌾 Farm2Home</div>
+
+    <div class="nav-links">
+        <a href="/Meet Team">Our Team</a>
         <a href="/marketplace">Marketplace</a>
         <a href="/login">Login</a>
         <a href="/signup">Signup</a>
@@ -104,42 +151,100 @@
 </div>
 
 <!-- HERO -->
-<div class="hero">
-    <h1>Direct Farm to Customer Platform</h1>
-    <p>Farmers sell directly • Buyers get fresh products • No middleman</p>
+<!-- HERO -->
+<div class="hero" style="display:flex; align-items:center; justify-content:center; gap:40px; text-align:left;">
 
-    <a href="/login">
-        <button class="btn btn-login">Login</button>
-    </a>
+    <!-- HERO TEXT -->
+    <div class="hero-text">
+        <h1>🌾 Farm2Home Pro</h1>
+        <p>Direct Farmer To Consumer Marketplace</p>
 
-    <a href="/signup">
-        <button class="btn btn-signup">Get Started</button>
-    </a>
+        <div class="hero-buttons">
+            <a href="/marketplace" class="btn btn-primary">Explore Marketplace</a>
+            <a href="/about" class="btn btn-dark">About Us</a>
+
+        </div>
+    </div>
+
+    <!-- HERO IMAGE -->
+    <div class="hero-image">
+        <img src="/static/uploads/farm2home.jpeg" alt="Farm2Home Pro" style="width:400px; border-radius:20px; box-shadow:0 5px 15px rgba(0,0,0,0.2);">
+    <h4>If Any Company Want To Show Their Add In This Website Contect Our Team</h4>
+    </div>
 </div>
+
 
 <!-- FEATURES -->
-<div class="features">
-
+<div class="grid">
     <div class="card">
-        <h3>🌾 Farmers</h3>
-        <p>Upload products directly and earn more profit.</p>
+        <h2>👨‍🌾 Farmers</h2>
+        <p>Upload products directly to the platform.</p>
     </div>
 
     <div class="card">
-        <h3>🛒 Buyers</h3>
-        <p>Buy fresh products at fair market price.</p>
+        <h2>🛒 Buyers</h2>
+        <p>Buy fresh products directly from farmers.</p>
     </div>
 
     <div class="card">
-        <h3>🚚 Delivery</h3>
-        <p>Fast courier system for all orders.</p>
+        <h2>🚚 FarmXPress</h2>
+        <p>Fast <br> Fresh<br> Reliable<br>Farm to door delivery within 24 hours</p>
     </div>
 
+    <div class="card">
+        <h2>📊 Admin</h2>
+        <p>Product approval and profit tracking.</p>
+    </div>
 </div>
 
-<footer>
-    © 2026 Farm2Home Pro | Built for Smart Agriculture
-</footer>
+<!-- HOW IT WORKS -->
+<div class="stats">
+    <h2>How It Works</h2>
+    <p>1️⃣ Farmer uploads products</p>
+    <p>2️⃣ Buyer places order</p>
+    <p>3️⃣ Buyer Pay Amount</p>
+    <p>4️⃣ Courier delivers products</p>
+</div>
+<div class="stats">
+    <p>Farmer</p>
+    <p>↓</p>
+    <p>Farm To Home Collection Center</p>
+    <p>↓</p>
+    <p>Quality Check</p>
+    <p>↓</p>
+    <p>Cold Storage</p>
+    <p>↓</p>
+    <p>FarmXpress Delivery</p>
+     <p>↓</p>
+    <p>Customer</p>
 
-</body>
-</html>
+</div>
+<div class="stats">Our Future Plan</div>
+<!-- STATS -->
+<div class="stats">
+    <div class="stats-grid">
+        <div class="stat-box">
+            <h2>500+</h2>
+            <p>Farmers</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>5000+</h2>
+            <p>Customers</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>10000+</h2>
+            <p>Orders</p>
+        </div>
+        <div>
+
+            <p>Farmer Income: +150%</p>
+            <p>Customer Cost: -20%</p>
+            <p>Middlemen: Reduced</p>
+            Freshness: 24-hour Delivery
+        </div>
+    </div>
+</div>
+
+{% endblock %}

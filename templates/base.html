@@ -1,90 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Farm2HomePro{% endblock %}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial,sans-serif;
-        }
+<title>
+{% block title %}
+Farm To Home
+{% endblock %}
+</title>
 
-        body{
-            background:#f4f6f9;
-        }
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-        nav{
-            background:#2e7d32;
-            padding:15px;
-        }
+body{
+background:#f4f6f9;
+}
 
-        nav a{
-            color:white;
-            text-decoration:none;
-            margin-right:15px;
-            font-weight:bold;
-        }
+nav{
+background:#2e7d32;
+padding:15px;
+display:flex;
+gap:20px;
+}
 
-        .container{
-            width:90%;
-            max-width:1200px;
-            margin:auto;
-            padding:20px;
-        }
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
 
-        .card{
-            background:white;
-            padding:15px;
-            border-radius:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,.1);
-            margin-bottom:15px;
-        }
+.container{
+width:90%;
+margin:auto;
+padding:20px;
+}
 
-        button{
-            background:#2e7d32;
-            color:white;
-            border:none;
-            padding:10px 15px;
-            border-radius:5px;
-            cursor:pointer;
-        }
+.card{
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
 
-        input,select{
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-        }
-    </style>
+button{
+padding:10px 15px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+img{
+max-width:100%;
+border-radius:10px;
+}
+</style>
+
 </head>
 <body>
 
 <nav>
-    <a href="/">🏠 Home</a>
-    <a href="/marketplace">🛒 Marketplace</a>
 
-    {% if session.get('role') == 'farmer' %}
-        <a href="/farmer">🌾 Farmer</a>
-    {% endif %}
+<a href="/">Home</a>
 
-    {% if session.get('role') == 'admin' %}
-        <a href="/admin">⚙️ Admin</a>
-    {% endif %}
+<a href="/marketplace">Marketplace</a>
 
-    {% if session.get('user_id') %}
-        <a href="/logout">🚪 Logout</a>
-    {% else %}
-        <a href="/login">🔐 Login</a>
-        <a href="/signup">📝 Signup</a>
-    {% endif %}
+<a href="/cart">Cart</a>
+
+{% if session.get("role")=="farmer" %}
+<a href="/farmer">Farmer</a>
+{% endif %}
+
+{% if session.get("role")=="admin" %}
+<a href="/admin">Admin</a>
+{% endif %}
+
+{% if session.get("user_id") %}
+<a href="/logout">Logout</a>
+{% else %}
+<a href="/login">Login</a>
+<a href="/signup">Signup</a>
+{% endif %}
+
 </nav>
 
 <div class="container">
-    {% block content %}
-    {% endblock %}
+
+{% block content %}
+{% endblock %}
+
 </div>
 
 </body>

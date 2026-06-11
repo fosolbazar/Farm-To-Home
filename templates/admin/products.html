@@ -1,53 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Farm To Home</title>
-</head>
-<body>
 {% extends "base.html" %}
 
-{% block title %}Product Approval{% endblock %}
+{% block title %}
+Approve Products
+{% endblock %}
 
 {% block content %}
 
-<div class="card">
-
-    <h1>📦 Product Approval Panel</h1>
-
-</div>
+<h2>📦 Product Approval</h2>
 
 {% for p in products %}
 
 <div class="card">
 
-    <h3>{{ p["name"] }}</h3>
+<h3>{{ p["name"] }}</h3>
 
-    <p>
-        Farmer Price:
-        ৳ {{ p["price"] }}
-    </p>
+<p>
+Farmer Price:
+৳ {{ p["price"] }}
+</p>
 
-    {% if p["approved"] == 0 %}
+{% if p["approved"] == 0 %}
 
-        <a href="/approve/{{ p['id'] }}">
-            <button>
-                ✅ Approve
-            </button>
-        </a>
+<a href="/approve/{{ p['id'] }}">
+<button>
+Approve
+</button>
+</a>
 
-    {% else %}
+{% else %}
 
-        <p>
-            Approved
-        </p>
+<p>✅ Approved</p>
 
-    {% endif %}
+{% endif %}
 
 </div>
 
 {% endfor %}
 
 {% endblock %}
-</body>
-</html>

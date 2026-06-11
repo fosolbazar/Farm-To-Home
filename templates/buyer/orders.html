@@ -1,45 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Orders</title>
-</head>
-
-<body>
 {% extends "base.html" %}
 
-{% block title %}Orders{% endblock %}
+{% block title %}
+Orders
+{% endblock %}
 
 {% block content %}
 
-<div class="card">
-
-    <h1>📦 My Orders</h1>
-
-</div>
+<h2>📦 My Orders</h2>
 
 {% for o in orders %}
 
 <div class="card">
 
-    <h3>
-        Order #{{ o["id"] }}
-    </h3>
+<p>
+Order ID:
+{{ o["id"] }}
+</p>
 
-    <p>
-        Total:
-        ৳ {{ o["total"] }}
-    </p>
+<p>
+Total:
+৳ {{ o["total"] }}
+</p>
 
-    <p>
-        Status:
-        {{ o["status"] }}
-    </p>
+<p>
+Status:
+{{ o["status"] }}
+</p>
 
 </div>
 
 {% endfor %}
 
 {% endblock %}
-
-</body>
-</html>

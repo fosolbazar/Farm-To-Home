@@ -1,37 +1,24 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
-
-from sms_service import send_sms
-from ai_service import suggest_price
-
 app = Flask(__name__)
 app.secret_key = "farm to home"
-
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-# ---------------- DB ----------------
 def get_db():
     conn = sqlite3.connect("database.db")
     conn.row_factory = sqlite3.Row
     return conn
-
-
 def init_db():
     conn = get_db()
     cur = conn.cursor()
-
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT,
         role TEXT,
-        mobile TEXT
-    )
-    """)
+        mobile TEXT)""")
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS products(
@@ -85,7 +72,9 @@ init_db()
 @app.route("/")
 def home():
     return render_template("index.html")
-
+@app.route("/about")
+def about():
+    return render_template("about.html")
 def get_market_price(price):
     return round(float(price) * 1.20)
 # ---------------- AUTH ----------------
@@ -204,7 +193,38 @@ def farmer():
     conn.close()
 
     return render_template("farmer/dashboard.html", products=products)
+@app.route("/farmer/edit/<int:pid>", methods=["GET", "POST"])
+def edit_product(pid):
+    if session.get("role") != "farmer":
+        return redirect("/login")
 
+    conn = get_db()
+    cur = conn.cursor()
+
+    # শুধু নিজের product edit করতে পারবে
+    cur.execute("SELECT * FROM products WHERE id=? AND farmer_id=?",
+                (pid, session["user_id"]))
+    product = cur.fetchone()
+
+    if not product:
+        return "Not allowed"
+
+    if request.method == "POST":
+        new_price = request.form["price"]
+
+        cur.execute("""
+        UPDATE products
+        SET price=?
+        WHERE id=? AND farmer_id=?
+        """, (new_price, pid, session["user_id"]))
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/farmer")
+
+    conn.close()
+    return render_template("farmer/edit.html", product=product)
 
 # ---------------- MARKETPLACE ----------------
 @app.route("/marketplace")
@@ -465,7 +485,9 @@ def orders():
 
     return render_template("buyer/orders.html", orders=orders)
 
-
+@app.route("/Meet Team")
+def Meet_Team():
+    return render_template("Meet Team.html")
 # ---------------- ADMIN SIMPLE ----------------
 @app.route("/admin")
 def admin():
@@ -481,7 +503,6 @@ def admin():
     return render_template("admin/dashboard.html",
                            users=users,
                            products=products)
-
 
 # ---------------- COURIER ----------------
 @app.route("/courier")

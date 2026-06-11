@@ -1,43 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payment</title>
-</head>
-<body>
 {% extends "base.html" %}
+
+{% block title %}
+Checkout
+{% endblock %}
 
 {% block content %}
 
-<h2>💳 Checkout</h2>
-
-{% for i in items %}
 <div class="card">
 
-    <h3>{{ i["name"] }}</h3>
-    <p>Qty: {{ i["qty"] }}</p>
-    <p>Price: ৳ {{ i["price"] }}</p>
+<h2>Checkout</h2>
 
-</div>
-{% endfor %}
+<form method="POST" action="/payment">
 
-<div class="card">
-    <h2>Total: ৳ {{ total }}</h2>
+<select name="payment">
 
-    <form method="POST" action="/payment">
+<option value="Cash On Delivery">
+Cash On Delivery
+</option>
 
-        <label>Payment Method</label>
-        <select name="payment">
-            <option value="bKash">bKash</option>
-            <option value="Nagad">Nagad</option>
-        </select>
+<option value="Bkash">
+Bkash
+</option>
 
-        <button type="submit">
-            Pay Now 🚀
-        </button>
+<option value="Nagad">
+Nagad
+</option>
 
-    </form>
+</select>
+
+<br><br>
+
+<button>
+
+Confirm Order
+
+</button>
+
+</form>
+
 </div>
 
 {% endblock %}
-</body>
-</html>

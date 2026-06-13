@@ -1,41 +1,30 @@
 {% extends "base.html" %}
-
-{% block title %}
-Marketplace
-{% endblock %}
+{% block title %}Marketplace{% endblock %}
 
 {% block content %}
+<h2 class="mb-4">🛒 Marketplace</h2>
 
-<h2>🛒 Marketplace</h2>
-
-<a href="/cart">
-    <button>🛍 View Cart</button>
-</a>
-
-<br><br>
-
-{% for p in products %}
-
-<div class="card">
-
-    <h3>{{ p["name"] }}</h3>
-
-    {% if p["image"] %}
-    <img
-    src="{{ url_for('static', filename='uploads/' + p['image']) }}"
-    width="250">
-    {% endif %}
-
-    <p>
-        Price: ৳ {{ p["market_price"] }}
-    </p>
-
-    <a href="/cart/add/{{ p['id'] }}">
-        <button>Add To Cart</button>
-    </a>
-
+<div class="text-end mb-3">
+    <a href="/cart" class="btn btn-warning">🛍 View Cart</a>
 </div>
 
-{% endfor %}
+<div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if p.image %}
+            <img src="{{ url_for('static', filename='uploads/' + p.image) }}"
+                 class="card-img-top" alt="{{ p.name }}">
+            {% endif %}
+            <div class="card-body text-center">
+    <h5 class="card-title">{{ p.name }}</h5>
+    <p class="card-text text-success">Marketplace Price: ৳ {{ p.market_price }}</p>
+    <a href="/cart/add/{{ p.id }}" class="btn btn-success">Add To Cart</a>
+</div>
 
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

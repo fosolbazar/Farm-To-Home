@@ -1,49 +1,49 @@
 {% extends "base.html" %}
-
-{% block title %}
-Invoice
-{% endblock %}
+{% block title %}Invoice{% endblock %}
 
 {% block content %}
+<div class="card p-4 shadow-sm col-md-8 mx-auto">
+    <h2 class="mb-3 text-center">🧾 Invoice</h2>
+    <hr>
 
-<div class="card">
+    <div class="mb-3">
+        <strong>Order ID:</strong> {{ order.id }}
+    </div>
+    <div class="mb-3">
+        <strong>Total:</strong> ৳ {{ order.total }}
+    </div>
+    <div class="mb-3">
+        <strong>Payment Method:</strong> {{ order.payment_method }}
+    </div>
+    <div class="mb-3">
+        <strong>Status:</strong> {{ order.status }}
+    </div>
 
-<h1>Invoice</h1>
+    <!-- Product list -->
+    {% if items %}
+    <h5 class="mt-4">🛒 Products</h5>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Product ID</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product_id }}</td>
+                <td>{{ item.qty }}</td>
+                <td>৳ {{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 
-<hr>
-
-<p>
-Order ID:
-{{ order["id"] }}
-</p>
-
-<p>
-Total:
-৳ {{ order["total"] }}
-</p>
-
-<p>
-Payment:
-{{ order["payment_method"] }}
-</p>
-
-<p>
-Status:
-{{ order["status"] }}
-</p>
-
-<br>
-
-<a href="/orders">
-
-<button>
-
-View Orders
-
-</button>
-
-</a>
-
+    <div class="text-center mt-4">
+        <a href="/orders" class="btn btn-primary">⬅ Back to Orders</a>
+    </div>
 </div>
-
 {% endblock %}

@@ -1,39 +1,21 @@
 {% extends "base.html" %}
-
-{% block title %}
-Admin Dashboard
-{% endblock %}
-
+{% block title %}Admin Dashboard{% endblock %}
 {% block content %}
-
-<h2>⚙ Admin Dashboard</h2>
-
-<div class="card">
-<h3>Total Users</h3>
-<h1>{{ users }}</h1>
+<h2>👨‍💼 Admin Dashboard</h2>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-3 shadow-sm">
+      <h4>Total Users</h4>
+      <h2>{{ users }}</h2>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card p-3 shadow-sm">
+      <h4>Total Products</h4>
+      <h2>{{ products }}</h2>
+    </div>
+  </div>
 </div>
-
-<div class="card">
-<h3>Total Products</h3>
-<h1>{{ products }}</h1>
-</div>
-
-<div class="card">
-
-<a href="/admin/products">
-<button>
-Approve Products
-</button>
-</a>
-
-<br><br>
-
-<a href="/admin/profit">
-<button>
-Profit Dashboard
-</button>
-</a>
-
-</div>
-
+<a href="/admin/products" class="btn btn-primary mt-3">Manage Products</a>
+<a href="/admin/profit" class="btn btn-success mt-3">View Profit</a>
 {% endblock %}

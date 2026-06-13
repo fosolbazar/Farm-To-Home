@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Farmer Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+  <!-- Farmer Info -->
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3">
+      <h4 class="mb-3">👨‍🌾 Farmer Info</h4>
+      <p><strong>Name:</strong> {{ farmer.username }}</p>
+      <p><strong>Mobile:</strong> {{ farmer.mobile }}</p>
+      <p><strong>District:</strong> {{ farmer.district }}</p>
+      <p><strong>Rating:</strong> ⭐ {{ farmer.rating }}</p>
+    </div>
+  </div>
+
+  <!-- Product List -->
+  <div class="col-md-8">
+    <div class="card shadow-sm p-3">
+      <h4 class="mb-3">📦 My Products</h4>
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Image</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in products %}
+          <tr>
+            <td>{{ p.name }}</td>
+            <td>৳ {{ p.price }}</td>
+            <td>{{ p.qty }}</td>
+            <td>
+              <img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="80">
+            </td>
+            <td>
+              {% if p.approved %}✅ Approved{% else %}⏳ Pending{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

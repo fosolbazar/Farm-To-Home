@@ -1,43 +1,30 @@
 {% extends "base.html" %}
-
-{% block title %}
-Courier Dashboard
-{% endblock %}
-
+{% block title %}Courier Dashboard{% endblock %}
 {% block content %}
-
-<h2>🚚 FarmXpress Courier</h2>
-
-<div class="card">
-
-<h3>Delivery Network</h3>
-
-<p>
-Fast Delivery
-</p>
-
-<p>
-Fresh Products
-</p>
-
-<p>
-Reliable Logistics
-</p>
-
-<p>
-24 Hour Delivery Target
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>Status</h3>
-
-<p>
-Courier System Active
-</p>
-
-</div>
-
+<h2>🚚 Courier Dashboard</h2>
+<table class="table table-hover">
+  <thead class="table-dark">
+    <tr><th>Order ID</th><th>User</th><th>Total</th><th>Status</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+    {% for o in orders %}
+    <tr>
+      <td>{{ o.id }}</td>
+      <td>{{ o.user_id }}</td>
+      <td>৳ {{ o.total }}</td>
+      <td>{{ o.status }}</td>
+      <td>
+        <form method="POST" action="/courier/update/{{ o.id }}">
+          <select name="status" class="form-select form-select-sm">
+            <option {% if o.status=="Pending" %}selected{% endif %}>Pending</option>
+            <option {% if o.status=="Delivered" %}selected{% endif %}>Delivered</option>
+            <option {% if o.status=="Cancelled" %}selected{% endif %}>Cancelled</option>
+          </select>
+          <button class="btn btn-primary btn-sm mt-1">Update</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

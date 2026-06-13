@@ -1,41 +1,32 @@
 {% extends "base.html" %}
-
-{% block title %}
-Profit Dashboard
-{% endblock %}
+{% block title %}Profit Dashboard{% endblock %}
 
 {% block content %}
+<h2 class="mb-4">💰 Profit Dashboard</h2>
 
-<h2>💰 Profit Dashboard</h2>
+<div class="row">
+  <!-- Total Revenue -->
+  <div class="col-md-4">
+    <div class="card text-center p-3 mb-3 shadow-sm">
+      <h4>Total Revenue</h4>
+      <h2 class="text-primary">৳ {{ revenue|int }}</h2>
+    </div>
+  </div>
 
-<div class="card">
+  <!-- Farmer Share -->
+  <div class="col-md-4">
+    <div class="card text-center p-3 mb-3 shadow-sm">
+      <h4>Farmer Share</h4>
+      <h2 class="text-success">৳ {{ farmer|int }}</h2>
+    </div>
+  </div>
 
-<h3>Total Revenue</h3>
-
-<h1>
-৳ {{ revenue|int }}
-</h1>
-
+  <!-- Platform Profit -->
+  <div class="col-md-4">
+    <div class="card text-center p-3 mb-3 shadow-sm">
+      <h4>Platform Profit</h4>
+      <h2 class="text-danger">৳ {{ profit|int }}</h2>
+    </div>
+  </div>
 </div>
-
-<div class="card">
-
-<h3>Farmer Share</h3>
-
-<h1>
-৳ {{ farmer|int }}
-</h1>
-
-</div>
-
-<div class="card">
-
-<h3>Platform Profit</h3>
-
-<h1>
-৳ {{ profit|int }}
-</h1>
-
-</div>
-
 {% endblock %}

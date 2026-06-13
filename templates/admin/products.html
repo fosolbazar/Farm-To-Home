@@ -1,40 +1,53 @@
 {% extends "base.html" %}
-
-{% block title %}
-Approve Products
-{% endblock %}
+{% block title %}Manage Products{% endblock %}
 
 {% block content %}
+<h2 class="mb-4">📦 Product Approval</h2>
 
-<h2>📦 Product Approval</h2>
-
-{% for p in products %}
-
-<div class="card">
-
-<h3>{{ p["name"] }}</h3>
-
-<p>
-Farmer Price:
-৳ {{ p["price"] }}
-</p>
-
-{% if p["approved"] == 0 %}
-
-<a href="/approve/{{ p['id'] }}">
-<button>
-Approve
-</button>
-</a>
-
-{% else %}
-
-<p>✅ Approved</p>
-
-{% endif %}
-
+<div class="card shadow-sm p-3">
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Farmer</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>৳ {{ p.price }}</td>
+        <td>{{ p.farmer_id }}</td>
+        <td>
+          {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="80">
+          {% else %}
+          No Image
+          {% endif %}
+        </td>
+        <td>
+          {% if p.approved == 1 %}
+            ✅ Approved
+          {% else %}
+            ⏳ Pending
+          {% endif %}
+        </td>
+        <td>
+          {% if p.approved == 0 %}
+            <a href="/approve/{{ p.id }}" class="btn btn-success btn-sm">Approve</a>
+          {% else %}
+            <span class="text-success">No Action Needed</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-
-{% endfor %}
-
 {% endblock %}

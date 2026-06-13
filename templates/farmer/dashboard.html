@@ -1,52 +1,26 @@
 {% extends "base.html" %}
-
-{% block title %}
-Farmer Dashboard
-{% endblock %}
-
+{% block title %}Farmer Dashboard{% endblock %}
 {% block content %}
-
 <h2>🌾 Farmer Dashboard</h2>
-
-<!-- Upload Product Form -->
-<div class="card">
-    <h3>Upload Product</h3>
-    <form method="POST" enctype="multipart/form-data">
-        <input name="name" placeholder="Product Name" required>
-        <br><br>
-
-        <input type="number" name="price" placeholder="Farmer Price" required>
-        <br><br>
-
-        <input type="file" name="image" required>
-        <br><br>
-
-        <button>Upload Product</button>
-    </form>
-</div>
-
-<!-- My Products Section -->
-<h2>My Products</h2>
-
-{% for p in products %}
-<div class="card">
-    <h3>{{ p.name }}</h3>
-
-    {% if p.image %}
-    <img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="250">
-    {% endif %}
-
-    <!-- Edit Button -->
-    <a href="/farmer/edit/{{ p.id }}" class="btn btn-dark">Edit</a>
-
-    <p>Farmer Price: ৳ {{ p.price }}</p>
-
-    {% if p.approved == 1 %}
-        <p>✅ Approved</p>
-    {% else %}
-        <p>⏳ Pending Approval</p>
-    {% endif %}
-</div>
-{% endfor %}
-
+<a href="/farmer/upload" class="btn btn-success mb-3">➕ Upload Product</a>
+<table class="table table-striped">
+  <thead class="table-dark">
+    <tr><th>Name</th><th>Price</th><th>Qty</th><th>Image</th><th>Status</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for p in products %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>৳ {{ p.price }}</td>
+      <td>{{ p.qty }}</td>
+      <td><img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="80"></td>
+      <td>{% if p.approved %}✅ Approved{% else %}⏳ Pending{% endif %}</td>
+      <td>
+        <a href="/farmer/edit/{{ p.id }}" class="btn btn-primary btn-sm">Edit</a>
+        <a href="/farmer/delete/{{ p.id }}" class="btn btn-danger btn-sm">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

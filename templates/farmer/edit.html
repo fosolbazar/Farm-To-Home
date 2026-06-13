@@ -1,23 +1,45 @@
 {% extends "base.html" %}
-
-{% block title %}
-Edit Product
-{% endblock %}
+{% block title %}Edit Product{% endblock %}
 
 {% block content %}
-<h2>📝 Edit Product</h2>
+<h2 class="mb-4">✏️ Edit Product</h2>
 
-<form method="POST" action="/farmer/edit/{{ product.id }}">
-    <label for="name">Product Name</label>
-    <input type="text" name="name" id="name" value="{{ product.name }}" readonly>
+<div class="card p-4 shadow-sm">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Name:</label>
+            <input type="text" name="name" value="{{ product.name }}" class="form-control" required>
+        </div>
 
-    <br><br>
+        <div class="mb-3">
+            <label class="form-label">Price:</label>
+            <input type="number" name="price" value="{{ product.price }}" class="form-control" min="1" required>
+        </div>
 
-    <label for="price">Price (৳)</label>
-    <input type="number" name="price" id="price" value="{{ product.price }}" required>
+        <div class="mb-3">
+            <label class="form-label">Quantity:</label>
+            <input type="number" name="qty" value="{{ product.qty }}" class="form-control" min="1" required>
+        </div>
 
-    <br><br>
+        <div class="mb-3">
+            <label class="form-label">Current Image:</label><br>
+            {% if product.image %}
+                <img src="{{ url_for('static', filename='uploads/' + product.image) }}" width="150" class="img-thumbnail">
+                <p class="text-muted mt-2">Current product image</p>
+            {% else %}
+                <span class="text-muted">No image uploaded</span>
+            {% endif %}
+        </div>
 
-    <button type="submit">Save</button>
-</form>
+        <div class="mb-3">
+            <label class="form-label">Upload New Image:</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+            <a href="/farmer" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

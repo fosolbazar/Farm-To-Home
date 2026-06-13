@@ -16,7 +16,7 @@
       <td><img src="{{ url_for('static', filename='uploads/' + p.image) }}" width="80"></td>
       <td>{% if p.approved %}✅ Approved{% else %}⏳ Pending{% endif %}</td>
       <td>
-        <a href="/farmer/edit/{{ p.id }}" class="btn btn-primary btn-sm">Edit</a>
+        <a href="/farmer/edit/{{ p.id }}" class="btn btn-warning btn-sm">Edit</a>
         <a href="/farmer/delete/{{ p.id }}" class="btn btn-danger btn-sm">Delete</a>
       </td>
     </tr>

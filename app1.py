@@ -116,6 +116,41 @@ def farmer_profile():
     products = cur.fetchall()
     conn.close()
     return render_template("farmer/profile.html", farmer=farmer, products=products)
+@app.route("/farmer/edit/<int:pid>", methods=["GET","POST"])
+def farmer_edit_product(pid):
+    if session.get("role") != "farmer":
+        return redirect("/login")
+
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM products WHERE id=%s AND farmer_id=%s", (pid, session["user_id"]))
+    product = cur.fetchone()
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        price = request.form.get("price")
+        qty = request.form.get("qty")
+        cur.execute("""
+            UPDATE products SET name=%s, price=%s, qty=%s WHERE id=%s AND farmer_id=%s
+        """, (name, price, qty, pid, session["user_id"]))
+        conn.commit()
+        conn.close()
+        return redirect("/farmer/profile")
+
+    conn.close()
+    return render_template("farmer/edit.html", product=product)
+@app.route("/farmer/delete/<int:pid>")
+def farmer_delete_product(pid):
+    if session.get("role") != "farmer":
+        return redirect("/login")
+
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM products WHERE id=%s AND farmer_id=%s", (pid, session["user_id"]))
+    conn.commit()
+    conn.close()
+
+    return redirect("/farmer/profile")
 
 # ---------------- BUYER ----------------
 @app.route("/marketplace")

@@ -6,15 +6,12 @@ app = Flask(__name__)
 app.secret_key = "farm to home"
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://postgres:1298@localhost:5432/farm2home_db")
 def get_db():
     return psycopg2.connect(
         dsn=DATABASE_URL,
         cursor_factory=psycopg2.extras.RealDictCursor
     )
-
-
 # ---------------- HOME ----------------
 @app.route("/")
 def home():

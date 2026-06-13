@@ -224,14 +224,27 @@ def invoice(order_id):
     items = cur.fetchall()
     conn.close()
     return render_template("buyer/invoice.html", order=order, items=items)
+@app.route("/admin/approve/<int:pid>")
+def approve_product(pid):
+    if session.get("role") != "admin":
+        return redirect("/login")
 
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE products SET approved=1 WHERE id=%s", (pid,))
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin/products")
 # ---------------- ADMIN ----------------
 @app.route("/admin")
 def admin_dashboard():
     return render_template("admin/dashboard.html")
-
 @app.route("/admin/products")
 def admin_products():
+    if session.get("role") != "admin":
+        return redirect("/login")
+
     conn = get_db()
     cur = conn.cursor()
     cur.execute("SELECT * FROM products")
@@ -254,6 +267,9 @@ def admin_profit():
 @app.route("/courier")
 def courier_dashboard():
     return render_template("courier/dashboard.html")
+@app.route("/meet-team")
+def meet_team():
+    return render_template("meet_team.html")
 
 if __name__ == "__main__":
     app.run()

@@ -40,7 +40,7 @@
         </td>
         <td>
           {% if p.approved == 0 %}
-            <a href="/approve/{{ p.id }}" class="btn btn-success btn-sm">Approve</a>
+            <a href="/admin/approve/{{ p.id }}" class="btn btn-success btn-sm">Approve</a>
           {% else %}
             <span class="text-success">No Action Needed</span>
           {% endif %}

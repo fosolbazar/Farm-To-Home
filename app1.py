@@ -1,17 +1,61 @@
 from flask import Flask, render_template, request, redirect, session
 import os, psycopg2, psycopg2.extras
 from werkzeug.utils import secure_filename
-
+import sqlite3
 app = Flask(__name__)
 app.secret_key = "farm to home"
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-DATABASE_URL = os.environ.get("DATABASE_URL")
 def get_db():
-    return psycopg2.connect(
-        dsn=DATABASE_URL,
-        cursor_factory=psycopg2.extras.RealDictCursor
+    try:
+        conn = sqlite3.connect("farm2home.db")
+        conn.row_factory = sqlite3.Row
+        return conn
+    except Exception as e:
+        print("DB connection error:", e)
+        return None
+def init_db():
+    conn = sqlite3.connect("farm2home.db")
+    cur = conn.cursor()
+
+    # Users table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        password TEXT,
+        mobile TEXT,
+        role TEXT
     )
+    """)
+
+    # Products table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        price REAL,
+        qty INTEGER,
+        image TEXT,
+        farmer_id INTEGER,
+        approved INTEGER DEFAULT 0
+    )
+    """)
+
+    # Orders table (optional)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        total REAL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
@@ -29,7 +73,7 @@ def signup():
         cur = conn.cursor()
         cur.execute("""
             INSERT INTO users(username,password,role,mobile)
-            VALUES (%s,%s,%s,%s)
+            VALUES (?,?,?,?)
         """, (
             request.form["username"],
             request.form["password"],
@@ -44,24 +88,30 @@ def signup():
 @app.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Fixed admin credentials
+        if username == "admin" and password == "1234":
+            session["role"] = "admin"
+            return render_template("admin/dashboard.html")
+
+        # Normal user login
         conn = get_db()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE username=%s AND password=%s",
-                    (request.form["username"], request.form["password"]))
+        cur.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
         user = cur.fetchone()
         conn.close()
+
         if user:
             session["user_id"] = user["id"]
             session["role"] = user["role"]
-            if user["role"] == "admin":
-                return redirect("/admin")
-            elif user["role"] == "farmer":
-                return redirect("/farmer")
-            elif user["role"] == "courier":
-                return redirect("/courier")
+            if user["role"] == "farmer":
+                return redirect("/farmer/profile")
             else:
                 return redirect("/marketplace")
-        return "Login Failed ❌"
+        else:
+            return "Invalid username or password!"
     return render_template("auth/login.html")
 
 @app.route("/logout")
@@ -76,7 +126,7 @@ def farmer_dashboard():
         return redirect("/login")
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM products WHERE farmer_id=%s", (session["user_id"],))
+    cur.execute("SELECT * FROM products WHERE farmer_id=?", (session["user_id"],))
     products = cur.fetchall()
     conn.close()
     return render_template("farmer/dashboard.html", products=products)
@@ -94,7 +144,7 @@ def upload_product():
         cur = conn.cursor()
         cur.execute("""
             INSERT INTO products(name,price,qty,image,farmer_id,approved)
-            VALUES (%s,%s,%s,%s,%s,0)
+            VALUES (?,?,?,?,?,0)
         """, (name, price, qty, filename, session["user_id"]))
         conn.commit()
         conn.close()
@@ -107,9 +157,9 @@ def farmer_profile():
         return redirect("/login")
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE id=%s", (session["user_id"],))
+    cur.execute("SELECT * FROM users WHERE id=?", (session["user_id"],))
     farmer = cur.fetchone()
-    cur.execute("SELECT * FROM products WHERE farmer_id=%s", (session["user_id"],))
+    cur.execute("SELECT * FROM products WHERE farmer_id=?", (session["user_id"],))
     products = cur.fetchall()
     conn.close()
     return render_template("farmer/profile.html", farmer=farmer, products=products)
@@ -120,7 +170,7 @@ def farmer_edit_product(pid):
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM products WHERE id=%s AND farmer_id=%s", (pid, session["user_id"]))
+    cur.execute("SELECT * FROM products WHERE id=? AND farmer_id=?", (pid, session["user_id"]))
     product = cur.fetchone()
 
     if request.method == "POST":
@@ -128,7 +178,7 @@ def farmer_edit_product(pid):
         price = request.form.get("price")
         qty = request.form.get("qty")
         cur.execute("""
-            UPDATE products SET name=%s, price=%s, qty=%s WHERE id=%s AND farmer_id=%s
+            UPDATE products SET name=?, price=?, qty=? WHERE id=? AND farmer_id=?
         """, (name, price, qty, pid, session["user_id"]))
         conn.commit()
         conn.close()
@@ -143,7 +193,7 @@ def farmer_delete_product(pid):
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("DELETE FROM products WHERE id=%s AND farmer_id=%s", (pid, session["user_id"]))
+    cur.execute("DELETE FROM products WHERE id=? AND farmer_id=?", (pid, session["user_id"]))
     conn.commit()
     conn.close()
 
@@ -177,7 +227,7 @@ def add_to_cart(pid):
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM products WHERE id=%s", (pid,))
+    cur.execute("SELECT * FROM products WHERE id=?", (pid,))
     product = cur.fetchone()
     conn.close()
 
@@ -221,14 +271,14 @@ def payment():
     cur = conn.cursor()
     cur.execute("""
         INSERT INTO orders(user_id, total, payment_method, status)
-        VALUES (%s, %s, %s, %s) RETURNING id
+        VALUES (?, ?, ?, ?) RETURNING id
     """, (session["user_id"], total, method, "Pending"))
     order_id = cur.fetchone()["id"]
 
     for i in items:
         cur.execute("""
             INSERT INTO order_items(order_id, product_id, qty, price)
-            VALUES (%s, %s, %s, %s)
+            VALUES (?, ?, ?, ?)
         """, (order_id, i["id"], i["qty"], i["price"]))
 
     conn.commit()
@@ -241,7 +291,7 @@ def payment():
 def orders():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM orders WHERE user_id=%s", (session["user_id"],))
+    cur.execute("SELECT * FROM orders WHERE user_id=?", (session["user_id"],))
     orders = cur.fetchall()
     conn.close()
     return render_template("buyer/orders.html", orders=orders)
@@ -250,9 +300,9 @@ def orders():
 def invoice(order_id):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM orders WHERE id=%s", (order_id,))
+    cur.execute("SELECT * FROM orders WHERE id=?", (order_id,))
     order = cur.fetchone()
-    cur.execute("SELECT * FROM order_items WHERE order_id=%s", (order_id,))
+    cur.execute("SELECT * FROM order_items WHERE order_id=?", (order_id,))
     items = cur.fetchall()
     conn.close()
     return render_template("buyer/invoice.html", order=order, items=items)
@@ -263,7 +313,7 @@ def approve_product(pid):
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("UPDATE products SET approved=1 WHERE id=%s", (pid,))
+    cur.execute("UPDATE products SET approved=1 WHERE id=?", (pid,))
     conn.commit()
     conn.close()
 
@@ -304,4 +354,4 @@ def meet_team():
     return render_template("meet_team.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
